@@ -1,0 +1,15 @@
+{
+  "name": "altcoin-ticker",
+  "version": "0.0.1",
+  "description": "Altcoin ticker application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongodb": "^2.2.33"
+  }
+}
