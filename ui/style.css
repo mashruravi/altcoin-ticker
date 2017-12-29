@@ -1,0 +1,13 @@
+body {
+  overflow-x: hidden;
+}
+
+#chart {
+  width: 100vw;
+  height: calc(100vh - 60px);
+  display: flex;
+}
+
+#chart > svg {
+  margin: auto;
+}

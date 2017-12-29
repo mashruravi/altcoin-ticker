@@ -1,0 +1,11 @@
+#buttons {
+  margin-right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#buttons > div {
+  margin: 8px 0;
+}
