@@ -75,6 +75,8 @@ plot = data => {
     .scale(x_scale)
     .orient('bottom');
 
+  var tooltip = d3.select('div.tooltip');
+
   d3.select('#chart svg').remove();
 
   const svg = d3
@@ -104,6 +106,42 @@ plot = data => {
     .data(data)
     .enter()
     .append('rect')
+    .on('mouseover', d => {
+      tooltip
+        .transition()
+        .duration(500)
+        .style('opacity', 0.9);
+
+      const start = d.intervalStart;
+      const end = d.intervalEnd;
+
+      tooltip
+        .html(
+          '<p>' +
+            (start.getHours() + ':' + start.getMinutes()) +
+            ' - ' +
+            (end.getHours() + ':' + end.getMinutes()) +
+            '</p>' +
+            '<p>Min: ' +
+            d.min +
+            '</p>' +
+            '<p>Max: ' +
+            d.max +
+            '</p><p>Open: ' +
+            d.open +
+            '</p><p>Close: ' +
+            d.close +
+            '</p>'
+        )
+        .style('left', d3.event.pageX + 'px')
+        .style('top', d3.event.pageY - 28 + 'px');
+    })
+    .on('mouseout', () => {
+      tooltip
+        .transition()
+        .delay(500)
+        .style('opacity', 0);
+    })
     .attr('x', d => {
       return x_scale(d.intervalStart);
     })
