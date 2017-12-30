@@ -49,7 +49,7 @@ plot = data => {
   const lastMilli = data[data.length - 1].intervalStart.getTime();
   const firstMilli = data[0].intervalStart.getTime();
   const pointCount = (lastMilli - firstMilli) / (1000 * 60 * currentInterval);
-  const rectangleWidth = availableWidth / pointCount;
+  const rectangleWidth = Math.min(availableWidth / pointCount, 115);
 
   const min = d3.min(data, d => {
     return Math.min(d.open, Math.min(d.close, Math.min(d.min, d.max)));
@@ -60,8 +60,8 @@ plot = data => {
 
   const x_scale = d3.time
     .scale()
-    .domain([data[0].intervalStart, data[data.length - 1].intervalStart])
-    .range([margins.left / 2, maxWidth - margins.right - rectangleWidth]);
+    .domain([data[0].intervalStart, data[data.length - 1].intervalEnd])
+    .range([margins.left / 2, maxWidth - margins.right]);
 
   const y_scale = d3.scale
     .linear()
@@ -169,16 +169,14 @@ plot = data => {
     .append('line')
     .attr('x1', d => {
       const a = d.intervalStart;
-      const b = d.intervalEnd;
-      return x_scale(new Date((a.getTime() + b.getTime()) / 2));
+      return x_scale(a) + rectangleWidth / 2;
     })
     .attr('y1', d => {
       return y_scale(d.max);
     })
     .attr('x2', d => {
       const a = d.intervalStart;
-      const b = d.intervalEnd;
-      return x_scale(new Date((a.getTime() + b.getTime()) / 2));
+      return x_scale(a) + rectangleWidth / 2;
     })
     .attr('y2', d => {
       return y_scale(Math.max(d.open, d.close));
@@ -190,16 +188,14 @@ plot = data => {
     .append('line')
     .attr('x1', d => {
       const a = d.intervalStart;
-      const b = d.intervalEnd;
-      return x_scale(new Date((a.getTime() + b.getTime()) / 2));
+      return x_scale(a) + rectangleWidth / 2;
     })
     .attr('y1', d => {
       return y_scale(d.min);
     })
     .attr('x2', d => {
       const a = d.intervalStart;
-      const b = d.intervalEnd;
-      return x_scale(new Date((a.getTime() + b.getTime()) / 2));
+      return x_scale(a) + rectangleWidth / 2;
     })
     .attr('y2', d => {
       return y_scale(Math.min(d.open, d.close));
