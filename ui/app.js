@@ -46,7 +46,10 @@ plot = data => {
   const availableWidth = maxWidth - (margins.left + margins.right);
   const availableHeight = maxHeight - (margins.top + margins.bottom);
 
-  const rectangleWidth = availableWidth / data.length;
+  const lastMilli = data[data.length - 1].intervalStart.getTime();
+  const firstMilli = data[0].intervalStart.getTime();
+  const pointCount = (lastMilli - firstMilli) / (1000 * 60 * currentInterval);
+  const rectangleWidth = availableWidth / pointCount;
 
   const min = d3.min(data, d => {
     return Math.min(d.open, Math.min(d.close, Math.min(d.min, d.max)));
