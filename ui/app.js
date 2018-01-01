@@ -2,6 +2,20 @@ let currentRange = 0.5;
 let currentInterval = 15;
 let currentCoin = 'xrp';
 
+const colors = {
+  positive: {
+    whiskers: '#5CDF87',
+    outline: '#5CDF87',
+    fill: '#5CDF87'
+  },
+  negative: {
+    whiskers: '#D14739',
+    outline: '#D14739',
+    fill: '#D14739'
+  },
+  opacity: 0.2
+};
+
 getData = () => {
   return new Promise((resolve, reject) => {
     jQuery.ajax({
@@ -155,9 +169,15 @@ plot = data => {
     .attr('height', d => {
       return Math.max(Math.abs(y_scale(d.open) - y_scale(d.close)), 1);
     })
+    .attr('stroke', d => {
+      return d.open < d.close
+        ? colors.positive.outline
+        : colors.negative.outline;
+    })
     .attr('fill', d => {
-      return d.open < d.close ? 'green' : 'red';
-    });
+      return d.open < d.close ? colors.positive.fill : colors.negative.fill;
+    })
+    .attr('fill-opacity', colors.opacity);
 
   const whiskers = svg
     .append('g')
@@ -182,7 +202,11 @@ plot = data => {
       return y_scale(Math.max(d.open, d.close));
     })
     .attr('stroke-width', 1)
-    .attr('stroke', 'gray');
+    .attr('stroke', d => {
+      return d.open < d.close
+        ? colors.positive.whiskers
+        : colors.negative.whiskers;
+    });
 
   whiskers
     .append('line')
@@ -201,7 +225,11 @@ plot = data => {
       return y_scale(Math.min(d.open, d.close));
     })
     .attr('stroke-width', 1)
-    .attr('stroke', 'gray');
+    .attr('stroke', d => {
+      return d.open < d.close
+        ? colors.positive.whiskers
+        : colors.negative.whiskers;
+    });
 };
 
 loadData = () => {
