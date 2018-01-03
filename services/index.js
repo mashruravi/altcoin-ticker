@@ -1,9 +1,17 @@
+'use strict';
+
 const MongoClient = require('mongodb').MongoClient;
 const Constants = require('./constants');
 
-const url = 'mongodb://localhost:27017/altcoin';
+let url = '';
+if (process.env.VCAP_SERVICES) {
+  const vcap_services = JSON.parse(process.env.VCAP_SERVICES);
+  url = vcap_services.mongodb[0].credentials.uri;
+} else {
+  url = 'mongodb://localhost:27017/altcoin';
+}
 
-_getDbInstance = () => {
+const _getDbInstance = () => {
   return new Promise((resolve, reject) => {
     MongoClient.connect(url, (err, db) => {
       if (err) {
@@ -17,7 +25,7 @@ _getDbInstance = () => {
 };
 
 // 'range' parameter is in days, 'interval' in minutes
-_getRangeStartDate = (range, interval) => {
+const _getRangeStartDate = (range, interval) => {
   const now = new Date();
   now.setSeconds(0);
   now.setMilliseconds(0);
@@ -38,7 +46,7 @@ _getRangeStartDate = (range, interval) => {
   return now;
 };
 
-_getIntervalBoundaries = (startDate, endDate, interval) => {
+const _getIntervalBoundaries = (startDate, endDate, interval) => {
   const intervals = [];
 
   const d = new Date(startDate.getTime());
@@ -58,7 +66,7 @@ _getIntervalBoundaries = (startDate, endDate, interval) => {
   return intervals;
 };
 
-_getRecords = (collection, intervals) => {
+const _getRecords = (collection, intervals) => {
   return new Promise((resolve, reject) => {
     _getDbInstance()
       .then(db => {
@@ -135,7 +143,7 @@ module.exports = {
             const i = records[r].interval;
             const d = records[r].data;
 
-            if(d.length === 0) {
+            if (d.length === 0) {
               continue;
             }
 
