@@ -1,6 +1,6 @@
 body {
   overflow-x: hidden;
-  background-color: #1F354D;
+  background-color: #1f354d;
 }
 
 #chart {
@@ -11,6 +11,10 @@ body {
 
 #chart > svg {
   margin: auto;
+}
+
+.chart-axis text {
+  fill: white;
 }
 
 div.tooltip {

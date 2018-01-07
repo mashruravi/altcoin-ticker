@@ -44,7 +44,10 @@ $(document).ready(() => {
   }
 
   const rangeBtns = d3.select('#buttons').append('div');
-  rangeBtns.append('span').text('Range (days): ');
+  rangeBtns
+    .append('span')
+    .attr('style', 'color: white')
+    .text('Range (days): ');
   const rangeBtnGrp = rangeBtns.append('div').attr('class', 'btn-group');
   for (const i in buttons.ranges) {
     rangeBtnGrp
@@ -58,7 +61,10 @@ $(document).ready(() => {
   }
 
   const intervalBtns = d3.select('#buttons').append('div');
-  intervalBtns.append('span').text('Interval (minutes): ');
+  intervalBtns
+    .append('span')
+    .attr('style', 'color: white')
+    .text('Interval (minutes): ');
   const intervalBtnGrp = intervalBtns.append('div').attr('class', 'btn-group');
   for (const i in buttons.intervals) {
     intervalBtnGrp

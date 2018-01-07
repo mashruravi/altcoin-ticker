@@ -104,11 +104,17 @@ plot = data => {
 
   svg
     .append('g')
+    .classed({
+      'chart-axis': true
+    })
     .attr('transform', 'translate(' + margins.left / 3 + ',0)')
     .call(y_axis);
 
   svg
     .append('g')
+    .classed({
+      'chart-axis': true
+    })
     .attr(
       'transform',
       'translate(0, ' +
